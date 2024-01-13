@@ -39,7 +39,6 @@ const cashflowEvents: Array<CashflowEvent> = [
     type: "expense",
     description: "Monthly groceries",
   },
-  // create more mocked data events here
   {
     id: "4",
     date: "2021-01-04T00:00:00.000Z",
@@ -49,21 +48,37 @@ const cashflowEvents: Array<CashflowEvent> = [
     description: "Monthly salary",
   },
   {
-    id: "5",
-    date: "2021-01-05T00:00:00.000Z",
-    name: "Salary",
-    amount: 1000,
-    type: "income",
-    description: "Monthly salary",
+    id: "32",
+    date: "2021-01-15T00:00:00.000Z",
+    name: "Groceries",
+    amount: 100,
+    type: "expense",
+    description: "Monthly groceries",
   },
   {
-    id: "6",
-    date: "2021-01-06T00:00:00.000Z",
-    name: "Salary",
-    amount: 1000,
-    type: "income",
-    description: "Monthly salary",
+    id: "32412",
+    date: "2021-02-17T00:00:00.000Z",
+    name: "Groceries",
+    amount: 100,
+    type: "expense",
+    description: "Monthly groceries",
   },
+  // {
+  //   id: "5",
+  //   date: "2021-01-05T00:00:00.000Z",
+  //   name: "Salary",
+  //   amount: 1000,
+  //   type: "income",
+  //   description: "Monthly salary",
+  // },
+  // {
+  //   id: "6",
+  //   date: "2021-01-06T00:00:00.000Z",
+  //   name: "Salary",
+  //   amount: 1000,
+  //   type: "income",
+  //   description: "Monthly salary",
+  // },
 ];
 
 // router

@@ -1,3 +1,10 @@
+import {
+  Button,
+  DatePicker,
+  Select,
+  SelectItem,
+  TextInput,
+} from "@tremor/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { type CashflowEvent } from "~/server/api/routers/cashflow";
@@ -19,37 +26,81 @@ export function CreateCashflowEvent() {
   const createCashflowEvent = api_client.cashflow.create.useMutation({
     onSuccess: () => {
       router.refresh();
-      setCreateCashflowEventFormData(initialFormData);
+      setCreateCashflowEventFormData({ ...initialFormData });
     },
   });
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        // createPost.mutate({ name });
-      }}
-      className="flex flex-col gap-2"
-    >
-      <input
-        type="text"
-        placeholder="Title"
-        value={createCashflowEventFormData.name}
-        onChange={(e) =>
-          setCreateCashflowEventFormData((prev) => ({
-            ...prev,
-            name: e.target.value,
-          }))
-        }
-        className="w-full rounded-md border border-slate-200 px-4 py-2 text-black"
-      />
-      <button
-        type="submit"
-        className="rounded-lg bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
-        disabled={createCashflowEvent.isLoading}
+    <div className="flex h-full flex-col items-center justify-center">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          createCashflowEvent.mutate({ ...createCashflowEventFormData });
+        }}
+        className="flex w-full max-w-xs flex-col gap-2"
       >
-        {createCashflowEvent.isLoading ? "Creating event..." : "Create event"}
-      </button>
-    </form>
+        {/* date */}
+        <DatePicker
+          value={
+            !!createCashflowEventFormData.date
+              ? new Date(createCashflowEventFormData.date)
+              : undefined
+          }
+          onValueChange={(e) => {
+            // console.log("## date", typeof e);
+            setCreateCashflowEventFormData((prev) => ({
+              ...prev,
+              date: e?.toISOString() ?? "",
+            }));
+          }}
+          disabled={createCashflowEvent.isLoading}
+        />
+        {/* name */}
+        <TextInput
+          placeholder="Name"
+          onChange={(e) =>
+            setCreateCashflowEventFormData((prev) => ({
+              ...prev,
+              name: e.target.value,
+            }))
+          }
+          disabled={createCashflowEvent.isLoading}
+        />
+        {/* amount */}
+        <TextInput
+          placeholder="Amount"
+          onChange={(e) =>
+            setCreateCashflowEventFormData((prev) => ({
+              ...prev,
+              amount: parseInt(e.target.value),
+            }))
+          }
+          disabled={createCashflowEvent.isLoading}
+        />
+        {/* type */}
+        <Select
+          value={createCashflowEventFormData.type}
+          onValueChange={(new_type) => {
+            // @ts-expect-error will add schema validation later for type
+            setCreateCashflowEventFormData((prev) => ({
+              ...prev,
+              type: new_type,
+            }));
+          }}
+          disabled={createCashflowEvent.isLoading}
+        >
+          <SelectItem value="income">income</SelectItem>
+          <SelectItem value="expense">expense</SelectItem>
+        </Select>
+
+        <Button
+          type="submit"
+          size="sm"
+          disabled={createCashflowEvent.isLoading}
+        >
+          {createCashflowEvent.isLoading ? "Creating event..." : "Create event"}
+        </Button>
+      </form>
+    </div>
   );
 }
