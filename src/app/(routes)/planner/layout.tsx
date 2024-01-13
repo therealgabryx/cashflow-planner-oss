@@ -1,9 +1,14 @@
 import { Text, Title } from "@tremor/react";
+import { type ReactNode } from "react";
 
-export default function ToolLayout(props) {
+export default function ToolLayout(props: {
+  form: ReactNode;
+  chart: ReactNode;
+  events: ReactNode;
+}) {
   return (
     <main className="p-6">
-      <Title>Dashboard</Title>
+      <Title>Cashflow Planner</Title>
       <Text>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</Text>
 
       {/* Main section */}

@@ -1,10 +1,8 @@
-"use client";
-
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { type CashflowEvent } from "~/server/api/routers/cashflow";
 
-import { api } from "~/trpc/react";
+import { api_client } from "~/trpc/react";
 
 const initialFormData = {
   name: "",
@@ -18,7 +16,7 @@ export function CreateCashflowEvent() {
   const [createCashflowEventFormData, setCreateCashflowEventFormData] =
     useState(initialFormData);
 
-  const createCashflowEvent = api.cashflow.create.useMutation({
+  const createCashflowEvent = api_client.cashflow.create.useMutation({
     onSuccess: () => {
       router.refresh();
       setCreateCashflowEventFormData(initialFormData);

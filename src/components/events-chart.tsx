@@ -1,7 +1,8 @@
-// "use client";
+"use client";
 
-import { Card, Title } from "@tremor/react";
-import { api } from "~/trpc/server";
+import { AreaChart, Card, Title } from "@tremor/react";
+import { useMemo } from "react";
+import { api_client } from "~/trpc/react";
 
 const chartdata = [
   {
@@ -40,26 +41,36 @@ const valueFormatter = function (number: number) {
   return "$ " + new Intl.NumberFormat("us").format(number).toString();
 };
 
-export async function EventsChart() {
-  // const events = await api.cashflow.get_events.useQuery();
-  const hello = await api.post.hello.query({ text: "from tRPC" });
+export function EventsChart() {
+  const { data } = api_client.cashflow.get_events.useQuery();
+
+  const chartdata = useMemo(() => {
+    if (!data?.events) {
+      return [];
+    } else {
+      const evts = data.events.map((event) => {
+        return {
+          date: event.date,
+          income: event.amount,
+          expenses: event.amount,
+        };
+      });
+      return evts;
+    }
+  }, [data?.events]);
 
   return (
     <Card>
-      <Title>Newsletter revenue over time (USD)</Title>
-      {/* <AreaChart
+      <Title>Cashflow events</Title>
+      <AreaChart
         className="mt-4 h-72"
-        data={chartdata}
+        data={chartdata ?? []}
         index="date"
         yAxisWidth={65}
-        categories={["SemiAnalysis", "The Pragmatic Engineer"]}
-        colors={["indigo", "cyan"]}
+        categories={["income", "expenses"]}
+        colors={["green", "red"]}
         valueFormatter={valueFormatter}
-      /> */}
-      <div>
-        <div>tRPC test:</div>
-        <div>Hello {JSON.stringify(hello, null, 2)}</div>
-      </div>
+      />
     </Card>
   );
 }

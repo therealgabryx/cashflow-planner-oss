@@ -14,13 +14,71 @@ export const cashflowEventSchema = z.object({
 export type CashflowEvent = z.infer<typeof cashflowEventSchema>;
 
 // mocked DB
-const cashflowEvents: Array<CashflowEvent> = [];
+const cashflowEvents: Array<CashflowEvent> = [
+  {
+    id: "1",
+    date: "2021-01-01T00:00:00.000Z",
+    name: "Salary",
+    amount: 1000,
+    type: "income",
+    description: "Monthly salary",
+  },
+  {
+    id: "2",
+    date: "2021-01-02T00:00:00.000Z",
+    name: "Rent",
+    amount: 500,
+    type: "expense",
+    description: "Monthly rent",
+  },
+  {
+    id: "3",
+    date: "2021-01-03T00:00:00.000Z",
+    name: "Groceries",
+    amount: 100,
+    type: "expense",
+    description: "Monthly groceries",
+  },
+  // create more mocked data events here
+  {
+    id: "4",
+    date: "2021-01-04T00:00:00.000Z",
+    name: "Salary",
+    amount: 1000,
+    type: "income",
+    description: "Monthly salary",
+  },
+  {
+    id: "5",
+    date: "2021-01-05T00:00:00.000Z",
+    name: "Salary",
+    amount: 1000,
+    type: "income",
+    description: "Monthly salary",
+  },
+  {
+    id: "6",
+    date: "2021-01-06T00:00:00.000Z",
+    name: "Salary",
+    amount: 1000,
+    type: "income",
+    description: "Monthly salary",
+  },
+];
 
 // router
 export const cashflowRouter = createTRPCRouter({
   get_events: publicProcedure.query(() => {
-    return cashflowEvents;
+    return { events: cashflowEvents };
   }),
+
+  hello: publicProcedure
+    .input(z.object({ text: z.string() }))
+    .query(({ input }) => {
+      return {
+        greeting: `Hello ${input.text}`,
+      };
+    }),
 
   create: publicProcedure
     .input(
